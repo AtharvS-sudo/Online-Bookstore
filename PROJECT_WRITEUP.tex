@@ -1,0 +1,393 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+% Code listing style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+% Header and footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Online Bookstore - MERN Stack}
+\lhead{Project Documentation}
+\rfoot{Page \thepage}
+
+% Title formatting
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge\bfseries Online Bookstore\\[0.5cm]}
+    {\LARGE MERN Stack Application\\[1.5cm]}
+    
+    {\Large\bfseries Project Documentation\\[3cm]}
+    
+    \includegraphics[width=0.3\textwidth]{bookstore-logo.png}\\[1cm]
+    % If you don't have a logo, comment out the line above
+    
+    {\large Developed using MongoDB, Express.js, React.js, and Node.js\\[2cm]}
+    
+    \vfill
+    
+    {\large November 2025\\[0.5cm]}
+    {\large Version 1.0.0}
+    
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{INTRODUCTION}
+
+\subsection{Project Overview}
+This project presents a comprehensive online bookstore application developed using the MERN (MongoDB, Express.js, React.js, Node.js) stack. The application provides a complete e-commerce solution for browsing and purchasing books online, featuring user authentication, a dynamic catalogue system, and a responsive user interface that adapts seamlessly across desktop, tablet, and mobile devices.
+
+\subsection{Objectives}
+The primary objectives of this project are:
+\begin{itemize}[noitemsep]
+    \item To develop a full-stack web application using modern JavaScript technologies
+    \item To implement secure user authentication and authorization mechanisms
+    \item To create an intuitive and responsive user interface for book browsing
+    \item To establish a robust backend API for data management
+    \item To integrate MongoDB for efficient data storage and retrieval
+    \item To demonstrate proficiency in the MERN stack ecosystem
+\end{itemize}
+
+\subsection{Technology Stack}
+
+\textbf{Frontend:}
+\begin{itemize}[noitemsep]
+    \item React.js 18.2.0 - Component-based UI library
+    \item React Router DOM 6.15.0 - Client-side routing
+    \item Axios 1.5.0 - HTTP client for API requests
+    \item CSS3 - Responsive styling and animations
+\end{itemize}
+
+\textbf{Backend:}
+\begin{itemize}[noitemsep]
+    \item Node.js - JavaScript runtime environment
+    \item Express.js 4.18.2 - Web application framework
+    \item MongoDB - NoSQL database
+    \item Mongoose 7.5.0 - MongoDB object modeling
+\end{itemize}
+
+\textbf{Security \& Authentication:}
+\begin{itemize}[noitemsep]
+    \item JSON Web Tokens (JWT) 9.0.2 - Token-based authentication
+    \item bcryptjs 2.4.3 - Password hashing and encryption
+\end{itemize}
+
+\newpage
+\section{SYSTEM ARCHITECTURE \& IMPLEMENTATION}
+
+\subsection{Application Architecture}
+
+The application follows a three-tier architecture pattern:
+
+\textbf{Presentation Layer (Frontend):}\\
+The React-based frontend provides an interactive user interface with four main pages: Home, Login, Registration, and Catalogue. The application uses React Router for seamless navigation and maintains user state through React hooks and local storage.
+
+\textbf{Application Layer (Backend API):}\\
+The Express.js server handles HTTP requests, implements business logic, and manages authentication middleware. RESTful API endpoints are organized into modular routes for authentication and book management.
+
+\textbf{Data Layer (Database):}\\
+MongoDB stores user credentials and book information in separate collections. Mongoose schemas enforce data validation and provide an elegant API for database operations.
+
+\subsection{Database Design}
+
+\textbf{User Schema:}
+\begin{lstlisting}[language=JavaScript, caption=User Schema Structure]
+{
+  name: String (required),
+  email: String (required, unique),
+  password: String (required, hashed),
+  createdAt: Date (default: current timestamp)
+}
+\end{lstlisting}
+
+\textbf{Book Schema:}
+\begin{lstlisting}[language=JavaScript, caption=Book Schema Structure]
+{
+  title: String (required),
+  author: String (required),
+  price: Number (required),
+  description: String (required),
+  image: String (default: placeholder),
+  category: String (required),
+  stock: Number (default: 0)
+}
+\end{lstlisting}
+
+\subsection{Key Features Implementation}
+
+\subsubsection{Home Page}
+The landing page features a gradient hero section with a call-to-action button directing users to the catalogue. Three feature cards highlight the bookstore's value propositions: wide selection, fast delivery, and competitive pricing. The page is fully responsive with mobile-optimized layouts.
+
+\subsubsection{User Registration}
+New users can create accounts through a registration form that collects name, email, and password. The system validates password confirmation on the client side before submission. Upon successful registration:
+\begin{itemize}[noitemsep]
+    \item Password is hashed using bcrypt with a salt factor of 10
+    \item User data is stored in MongoDB
+    \item JWT token is generated and returned
+    \item User is automatically logged in and redirected to the catalogue
+\end{itemize}
+
+\subsubsection{User Login}
+Existing users authenticate through the login page. The system:
+\begin{itemize}[noitemsep]
+    \item Validates credentials against the database
+    \item Compares hashed passwords using bcrypt
+    \item Generates JWT tokens for authenticated sessions
+    \item Stores authentication tokens in browser local storage
+    \item Maintains user session across page refreshes
+\end{itemize}
+
+\subsubsection{Book Catalogue}
+The catalogue page displays all available books in a responsive grid layout. Features include:
+\begin{itemize}[noitemsep]
+    \item Dynamic book cards with images, titles, authors, descriptions, and prices
+    \item Real-time search functionality filtering by title or author
+    \item Responsive grid that adapts from 1 to 4 columns based on screen size
+    \item Loading states and empty state handling
+    \item Add to cart buttons for future shopping cart integration
+\end{itemize}
+
+\subsection{API Endpoints}
+
+\textbf{Authentication Routes:}
+\begin{itemize}[noitemsep]
+    \item \texttt{POST /api/auth/register} - Create new user account
+    \item \texttt{POST /api/auth/login} - Authenticate existing user
+\end{itemize}
+
+\textbf{Book Routes:}
+\begin{itemize}[noitemsep]
+    \item \texttt{GET /api/books} - Retrieve all books
+    \item \texttt{GET /api/books/:id} - Retrieve specific book by ID
+    \item \texttt{POST /api/books} - Add new book (admin functionality)
+\end{itemize}
+
+\subsection{Security Implementation}
+
+\textbf{Password Security:}\\
+All passwords are hashed using bcryptjs before storage. The hashing algorithm uses a salt factor of 10, making brute-force attacks computationally expensive.
+
+\textbf{Authentication:}\\
+JWT tokens are used for stateless authentication. Each token contains the user ID as payload and is signed with a secret key. Tokens expire after 1 hour, requiring re-authentication.
+
+\textbf{CORS Configuration:}\\
+Cross-Origin Resource Sharing is enabled to allow the React frontend (port 3000) to communicate with the Express backend (port 5000) during development.
+
+\newpage
+\section{USER INTERFACE \& RESPONSIVE DESIGN}
+
+\subsection{Design Principles}
+
+The application follows modern web design principles:
+\begin{itemize}[noitemsep]
+    \item \textbf{Consistency:} Uniform color scheme and typography throughout
+    \item \textbf{Simplicity:} Clean, uncluttered interfaces with clear navigation
+    \item \textbf{Feedback:} Visual feedback for user interactions (hover effects, loading states)
+    \item \textbf{Accessibility:} Semantic HTML and proper form labels
+\end{itemize}
+
+\subsection{Color Scheme \& Typography}
+
+\textbf{Primary Colors:}
+\begin{itemize}[noitemsep]
+    \item Navigation: \#2c3e50 (dark blue-gray)
+    \item Accent: \#3498db (bright blue)
+    \item Success: \#27ae60 (green for prices)
+    \item Error: \#e74c3c (red for error messages)
+\end{itemize}
+
+\textbf{Typography:}\\
+System font stack for optimal performance and native appearance across platforms.
+
+\subsection{Responsive Breakpoints}
+
+The application implements mobile-first responsive design with breakpoints at:
+\begin{itemize}[noitemsep]
+    \item Mobile: $<$ 768px (single column layouts, stacked navigation)
+    \item Tablet: 768px - 1024px (2-column grids)
+    \item Desktop: $>$ 1024px (3-4 column grids, full navigation)
+\end{itemize}
+
+\subsection{Component Structure}
+
+\textbf{Navbar Component:}\\
+Persistent navigation bar displaying logo, page links, and authentication status. Dynamically shows login/register buttons for guests or user name and logout button for authenticated users.
+
+\textbf{Page Components:}
+\begin{itemize}[noitemsep]
+    \item Home: Hero section with gradient background and feature cards
+    \item Login/Register: Centered authentication forms with validation
+    \item Catalogue: Grid-based book display with search functionality
+\end{itemize}
+
+\subsection{User Experience Flow}
+
+\begin{enumerate}[noitemsep]
+    \item \textbf{First-time Visitor:} Lands on home page $\rightarrow$ Explores features $\rightarrow$ Clicks "Browse Books" $\rightarrow$ Views catalogue $\rightarrow$ Prompted to register/login for purchases
+    \item \textbf{Returning User:} Logs in $\rightarrow$ Redirected to catalogue $\rightarrow$ Searches for books $\rightarrow$ Adds to cart (future feature)
+    \item \textbf{Navigation:} Persistent navbar allows easy movement between pages at any time
+\end{enumerate}
+
+\section{INSTALLATION \& DEPLOYMENT}
+
+\subsection{Prerequisites}
+\begin{itemize}[noitemsep]
+    \item Node.js (v14 or higher)
+    \item MongoDB (local installation or MongoDB Atlas account)
+    \item npm or yarn package manager
+\end{itemize}
+
+\subsection{Installation Steps}
+
+\textbf{1. Install backend dependencies:}
+\begin{lstlisting}[language=bash]
+npm install
+\end{lstlisting}
+
+\textbf{2. Install frontend dependencies:}
+\begin{lstlisting}[language=bash]
+cd client
+npm install
+cd ..
+\end{lstlisting}
+
+\textbf{3. Configure environment variables in .env file:}
+\begin{lstlisting}[language=bash]
+MONGODB_URI=mongodb://localhost:27017/bookstore
+PORT=5000
+JWT_SECRET=your_secure_secret_key
+\end{lstlisting}
+
+\textbf{4. Seed the database with sample books using MongoDB shell}
+
+\textbf{5. Start the backend server:}
+\begin{lstlisting}[language=bash]
+npm start
+\end{lstlisting}
+
+\textbf{6. Start the React development server:}
+\begin{lstlisting}[language=bash]
+npm run client
+\end{lstlisting}
+
+\subsection{Testing Procedures}
+
+\textbf{Manual Testing:}
+\begin{itemize}[noitemsep]
+    \item Register new user and verify database entry
+    \item Login with created credentials
+    \item Test search functionality in catalogue
+    \item Verify responsive design on different screen sizes
+    \item Test navigation between all pages
+\end{itemize}
+
+\newpage
+\section{CONCLUSION \& FUTURE ENHANCEMENTS}
+
+\subsection{Project Achievements}
+
+This project successfully demonstrates a complete MERN stack implementation with:
+\begin{itemize}[noitemsep]
+    \item Secure user authentication and authorization
+    \item RESTful API design and implementation
+    \item Responsive, modern user interface
+    \item Database integration with MongoDB
+    \item Component-based React architecture
+\end{itemize}
+
+\subsection{Future Enhancements}
+
+\textbf{Shopping Cart Functionality:}\\
+Implement a persistent shopping cart allowing users to add multiple books and proceed to checkout.
+
+\textbf{Payment Integration:}\\
+Integrate payment gateways (Stripe, PayPal) for secure online transactions.
+
+\textbf{Order Management:}\\
+Create order history and tracking system for users to monitor their purchases.
+
+\textbf{Admin Dashboard:}\\
+Develop an administrative interface for managing books, users, and orders.
+
+\textbf{Book Reviews \& Ratings:}\\
+Allow users to rate and review books, helping others make informed decisions.
+
+\textbf{Advanced Search \& Filters:}\\
+Implement category filters, price ranges, and sorting options for better book discovery.
+
+\textbf{Wishlist Feature:}\\
+Enable users to save books for future purchase.
+
+\textbf{Email Notifications:}\\
+Send confirmation emails for registration, orders, and shipping updates.
+
+\subsection{Learning Outcomes}
+
+Through this project, the following skills were developed:
+\begin{itemize}[noitemsep]
+    \item Full-stack JavaScript development
+    \item RESTful API design and implementation
+    \item Database schema design and optimization
+    \item User authentication and security best practices
+    \item Responsive web design techniques
+    \item State management in React applications
+    \item Asynchronous programming with async/await
+    \item Version control and project organization
+\end{itemize}
+
+\subsection{Conclusion}
+
+The Online Bookstore application represents a fully functional e-commerce platform built with modern web technologies. The MERN stack proved to be an excellent choice for rapid development while maintaining scalability and performance. The application successfully meets all specified requirements and provides a solid foundation for future enhancements. This project demonstrates the practical application of full-stack development principles and serves as a portfolio piece showcasing proficiency in contemporary web development technologies.
+
+\vspace{1cm}
+
+\noindent\textbf{Project Repository:} Available on request\\
+\textbf{Live Demo:} Available on request\\
+\textbf{Documentation Date:} November 2025\\
+\textbf{Version:} 1.0.0
+
+\end{document}
