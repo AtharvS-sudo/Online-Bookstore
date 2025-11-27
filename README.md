@@ -47,7 +47,7 @@ cd ..
 
 Example `.env` configuration:
 ```
-MONGODB_URI=mongodb+srv://myuser:mypassword@cluster0.xxxxx.mongodb.net/bookstore?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://Atharva:mongopass1234@cluster0.olkdj1k.mongodb.net/bookstore?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=your_secure_random_string_here
 PORT=5000
 ```
